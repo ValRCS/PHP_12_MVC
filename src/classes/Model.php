@@ -47,8 +47,26 @@ class Model
 
     private function processGet($incoming)
     {
-        $data = [];
-        //TODO get data from DB etc
+        $data = [
+            "state" => "loggedin", //TODO actually log in
+            "user" => "valdis", //TODO get from Session
+            "id" => 5,
+            "tracks" => $this->getSongs(),
+        ];
         return $data;
+    }
+
+    //TODO add actual user id
+    private function getSongs()
+    {
+        $stmt = $this->db->prepare("SELECT * FROM tracks");
+        //TODO add filter by user id WHERE (user_id = :user_id)");
+        //$stmt->bindParam(':user_id', $_SESSION['id']);
+        $stmt->execute();
+        $isFetchModeSet = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        //we store the results in memory, might not be best for large results
+        $allRows = $stmt->fetchAll();
+        return $allRows;
     }
 }

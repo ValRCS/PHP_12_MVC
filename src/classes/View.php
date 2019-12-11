@@ -45,7 +45,67 @@ MYLIMITER;
 
     private function getMain($data)
     {
-        return "";
+        $allRows = $data['tracks'];
+        $html = "";
+        $html .= "<hr>";
+        $html .= "<div class='song-container'>";
+        $columnsPrinted = false; //for column names
+        foreach ($allRows as $row) {
+            if (!$columnsPrinted) {
+                $html .= "<div class='row-column-names'>";
+                foreach ($row as $key => $value) {
+
+                    if ($key == 'Column') {
+                        $key = "Kolonna";
+                    }
+                    $html .= "<span class='column-name'> $key </span>";
+                }
+                $columnsPrinted = true;
+                $html .= "</div>";
+            }
+
+            if (isset($row['favorite'])) {
+                $special = "song-style-" . $row['favorite'];
+            } else {
+                $special = "song-style-null";
+            }
+
+            $html .= "<div class='row-song $special'>";
+            $html .= "<form action='index.php' method='post'>";
+            $html .= "<div class='update-songs'>";
+            // $html .= "<span>Title: " . $row["title"] . "</span>";
+
+            foreach ($row as $key => $value) {
+
+                //TODO we need to process title, artist and length seperately as special cases
+                switch ($key) {
+                    case 'favorite':
+                        //set checked to show if we have a set value
+                        $checked = $value ? "checked" : "";
+                        $html .= "<input type='checkbox' class='value-$key' name='$key' value='$key' $checked></input>";
+                        break;
+                    case 'title':
+                    case 'artist':
+                    case 'length':
+                        $html .= "<input class='input-value-cell value-$key' name='$key' value='$value'></input>";
+                        break;
+                    default:
+                        $html .= "<span class='value-cell'>$value </span>";
+                        break;
+                }
+            }
+            $html .= "<button name='update' value='" . $row['id'] . "'>Update</button>";
+            $html .= "</div>";
+            $html .= "</form>";
+            $html .= "<form action='index.php' method='post'>";
+            $html .= "<button name='delete' value='" . $row['id'] . "'>Delete</button>";
+            $html .= "</form>";
+            $html .= "</div>";
+        }
+        $html .= "</div>";
+        $html .= "<hr>";
+
+        return $html;
     }
 
     private function getFooter()
