@@ -27,6 +27,10 @@ class Controller
             echo "Working for you!" . $_GET['name'];
             die();
         }
+        if (isset($_GET['read'])) {
+            echo "Going to read " . $_GET['read'];
+            die();
+        }
         $this->model->processData(["operation" => "get"]);
     }
 
