@@ -1,17 +1,35 @@
 <?php
 class View
 {
-    private $model;
-    private $controller;
 
-    public function __construct($controller, $model)
+    public function __construct()
     {
-        $this->controller = $controller;
-        $this->model = $model;
+        //add logging maybe
     }
 
-    public function render()
+    public function render($data = null)
     {
-        echo "<p>" . $this->model->string . "</p>";
+        $html = $this->getHeader();
+        //TODO use $data when generating our HTML
+        $html .= "<h1>Generating bunch of HTML</h1>";
+        $html .= $this->getMain($data);
+        $html .= $this->getFooter();
+
+        echo $html;
+    }
+
+    private function getHeader()
+    {
+        return "";
+    }
+
+    private function getMain($data)
+    {
+        return "";
+    }
+
+    private function getFooter()
+    {
+        return "";
     }
 }
